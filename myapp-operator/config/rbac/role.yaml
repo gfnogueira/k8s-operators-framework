@@ -1,0 +1,47 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: myapp-operator
+  namespace: myapp-operator-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: myapp-operator-role
+rules:
+  # Permissions for our custom resource
+  - apiGroups: ["app.gfnogueira.com"]
+    resources: ["myapps"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups: ["app.gfnogueira.com"]
+    resources: ["myapps/status"]
+    verbs: ["get", "update", "patch"]
+  - apiGroups: ["app.gfnogueira.com"]
+    resources: ["myapps/finalizers"]
+    verbs: ["update"]
+  # Permissions for Deployments (what we create/manage)
+  - apiGroups: ["apps"]
+    resources: ["deployments"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  # Permissions for Services
+  - apiGroups: [""]
+    resources: ["services"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  # Permissions for Events (for recording events)
+  - apiGroups: [""]
+    resources: ["events"]
+    verbs: ["create", "patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: myapp-operator-rolebinding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: myapp-operator-role
+subjects:
+  - kind: ServiceAccount
+    name: myapp-operator
+    namespace: myapp-operator-system

@@ -1,0 +1,13 @@
+# ============================================================================
+# Example 1: Simple nginx deployment
+# This creates a 3-replica nginx deployment managed by the operator.
+# ============================================================================
+apiVersion: app.gfnogueira.com/v1alpha1
+kind: MyApp
+metadata:
+  name: my-web-app
+  namespace: default
+spec:
+  replicas: 3
+  image: nginx:1.25
+  port: 80

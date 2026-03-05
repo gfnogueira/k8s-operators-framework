@@ -1,0 +1,19 @@
+# ============================================================================
+# Example 3: Scaling test
+# Apply this, then change replicas from 1 to 5 and watch the operator react.
+#
+# Demo flow:
+#   1. kubectl apply -f myapp-sample-scale-test.yaml
+#   2. kubectl get myapps -w                          (watch status)
+#   3. kubectl patch myapp scale-test --type merge -p '{"spec":{"replicas":5}}'
+#   4. Watch the operator scale the deployment!
+# ============================================================================
+apiVersion: app.gfnogueira.com/v1alpha1
+kind: MyApp
+metadata:
+  name: scale-test
+  namespace: default
+spec:
+  replicas: 1
+  image: nginx:alpine
+  port: 8080

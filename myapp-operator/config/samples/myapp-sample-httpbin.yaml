@@ -1,0 +1,13 @@
+# ============================================================================
+# Example 2: httpbin for API testing
+# Good for demoing scale up/down and image changes.
+# ============================================================================
+apiVersion: app.gfnogueira.com/v1alpha1
+kind: MyApp
+metadata:
+  name: httpbin-app
+  namespace: default
+spec:
+  replicas: 2
+  image: kennethreitz/httpbin:latest
+  port: 80
